@@ -37,6 +37,19 @@ app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads"
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
+@app.get("/healthz", status_code=200)
+def liveness_check():
+    """Returns 200 if the application is alive."""
+    return {"status": "OK"}
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy"}
+
 @app.get("/")
+async def root():
+    return {"status": "ok"}
+
+@app.get("/pvi")
 async def index():
     return FileResponse("static/index.html")
